@@ -69,7 +69,7 @@
               </a-col>
               <a-col :lg="6">
                 <a-form-model-item label="订单来源">
-                  <a-input v-model="model.orderSource" :size="size" :style="inputStyle" />
+                  <a-input v-model="model.orderSource" :size="size" :style="inputStyle" :disabled="true" />
                 </a-form-model-item>
               </a-col>
             </a-row>
@@ -410,6 +410,7 @@ export default {
           this.$set(this.model, 'salesman', res.result.FSalesman)
           this.$set(this.model, 'fcurrency', res.result.FCurrency)
           this.$set(this.model, 'FUserName', res.result.FSalesman)
+          this.$set(this.model, 'orderSource', res.result.FAgentName)
         }
       })
       // 订货日期日期默认系统日期
