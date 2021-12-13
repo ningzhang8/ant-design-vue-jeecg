@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div style="width: 100%;text-align: left;margin-top: 20px">
+       </br>　　欢迎使用系统.</br>
+    </div> 
+    <!-- <a-calendar /> -->
+    <!-- <p>习惯是思想与行为的领导者。</p> -->
+    <!-- 
     <index-chart v-if="indexStyle==1"></index-chart>
     <index-bdc v-if="indexStyle==2"></index-bdc>
     <index-task v-if="indexStyle==3"></index-task>
@@ -11,6 +17,7 @@
         <a-radio :value="3">任务表格</a-radio>
       </a-radio-group>
     </div>
+    -->
   </div>
 </template>
 
@@ -22,9 +29,9 @@
   export default {
     name: "Analysis",
     components: {
-      IndexChart,
+      /*IndexChart,
       IndexTask,
-      IndexBdc
+      IndexBdc*/
     },
     data() {
       return {
