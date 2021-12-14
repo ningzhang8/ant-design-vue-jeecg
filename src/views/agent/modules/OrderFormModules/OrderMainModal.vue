@@ -160,12 +160,12 @@
             <a-col :lg="6"> </a-col>
             <a-col :lg="6">
               <a-form-model-item label="附档一">
-                <j-upload v-model="model.fileList1" text="上传" :multiple="false"></j-upload>
+                <j-upload v-model="model.file1" text="上传" :multiple="false" :number="1"></j-upload>
               </a-form-model-item>
             </a-col>
             <a-col :lg="6">
             <a-form-model-item label="附档二">
-              <j-upload v-model="model.fileList2" text="上传" :multiple="false"></j-upload>
+              <j-upload v-model="model.file2" text="上传" :multiple="false" :number="1"></j-upload>
             </a-form-model-item>
           </a-col>
           </a-col>
@@ -347,7 +347,9 @@ export default {
             key: 'imagePath',
             type: FormTypes.image,
             width: '10%',
-            token: true
+            token: true,
+            responseName: 'message',
+            action: window._CONFIG['domianURL'] + '/sys/common/upload'
           },
           {
             title: '其它要求',
@@ -378,8 +380,8 @@ export default {
           },
         ]
       },
-      fileList1: [],
-      fileList2: [],
+      file1: [],
+      file2: [],
     }
   },
   mounted() {
@@ -476,6 +478,7 @@ export default {
         .then(allValues => {
           let formData = this.classifyIntoFormData(allValues)
           // 发起请求
+          console.log(formData);
           return this.requestAddOrEdit(formData)
         })
         .catch(e => {

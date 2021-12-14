@@ -2717,7 +2717,6 @@ export default {
     },
     /** 上传请求地址 */
     getUploadAction(value) {
-      console.log(value)
       if (!value) {
         return window._CONFIG['domianURL'] + '/sys/common/upload'
       } else {

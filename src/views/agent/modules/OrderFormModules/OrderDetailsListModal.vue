@@ -9,7 +9,9 @@
         :columns="columns"
         :dataSource="dataSource"
         :loading="loading"
-      ></a-table>
+      >
+      <!-- <img slot="imagePath" slot-scope="imagePath" :src="imagePath" /> -->
+      </a-table>
     </div>
     <!--  订单表明细区域——end -->
   </a-card>
@@ -93,12 +95,13 @@ export default {
           dataIndex: 'borderMode',
           key: 'borderMode',
         },
-        {
-          title: '图片',
-          align: "center",
-          dataIndex: 'imagePath',
-          key: 'imagePath',
-        },
+        // {
+        //   title: '图片',
+        //   align: "center",
+        //   dataIndex: 'imagePath',
+        //   key: 'imagePath',
+        //   scopedSlots: { customRender: 'imagePath' },
+        // },
         {
           title: '其它要求',
           align: "center",
