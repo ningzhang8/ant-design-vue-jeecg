@@ -12,35 +12,20 @@
     @cancel="handleCancel"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form-model ref="form" :model="model" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form-model ref="form" :model="model" :labelCol="labelCol" :wrapperCol="wrapperCol" :rules="validatorRules" :hideRequiredMark=true>
         <!-- 主表单区域 -->
         <a-row class="form-row">
           <a-col :span="18">
             <a-col :span="6">
-              <a-form-model-item label="订货日期">
+              <a-form-model-item label="订货日期" prop="orderDate">
                 <a-date-picker :size="size" :style="inputStyle" v-model="model.orderDate"  @change="onOrderDateChange" />
               </a-form-model-item>
             </a-col>
             <a-col :span="6">
-              <a-form-model-item label="要求出货日">
+              <a-form-model-item label="要求出货日" prop="sellDate">
                 <a-date-picker :size="size" :style="inputStyle" v-model="model.sellDate" />
               </a-form-model-item>
             </a-col>
-            <!-- <a-col :lg="8">
-              <a-form-model-item
-                align="right"
-              >
-                <vue-qr
-                  :correctLevel="3"
-                  :autoColor="false"
-                  colorDark="#313a90"
-                  :text="codeUrl"
-                  :size="60"
-                  :margin="0"
-                  :logoMargin="3"
-                />
-              </a-form-model-item>
-            </a-col> -->
           </a-col>
           <a-col :span="6">
             <a-form-model-item label="订单编号">
@@ -76,18 +61,18 @@
 
             <a-row class="form-row">
               <a-col :lg="6">
-                <a-form-model-item label="详细地址">
+                <a-form-model-item label="详细地址" prop="fullAddress">
                   <a-input v-model="model.fullAddress" :size="size" style="width: 328px;" />
                 </a-form-model-item>
               </a-col>
               <a-col :lg="6"></a-col>
               <a-col :lg="6">
-                <a-form-model-item label="收货人">
+                <a-form-model-item label="收货人" prop="cnee">
                   <a-input v-model="model.cnee" :size="size" :style="inputStyle" />
                 </a-form-model-item>
               </a-col>
               <a-col :lg="6">
-                <a-form-model-item label="电话">
+                <a-form-model-item label="电话" prop="tel">
                   <a-input v-model="model.tel" :size="size" :style="inputStyle" />
                 </a-form-model-item>
               </a-col>
@@ -95,7 +80,7 @@
 
             <a-row class="form-row">
               <a-col :lg="6">
-                <a-form-model-item label="市">
+                <a-form-model-item label="市" prop="region">
                   <a-input v-model="model.region" @click="handleChangeForCity" :size="size" :style="inputStyle" />
                 </a-form-model-item>
               </a-col>
@@ -110,7 +95,7 @@
                 </a-form-model-item>
               </a-col>
               <a-col :lg="6">
-                <a-form-model-item label="客户订单号" v-model="model.customer_order_number">
+                <a-form-model-item label="客户订单号" v-model="model.customer_order_number" prop="customerOrderNumber">
                   <a-input v-model="model.customerOrderNumber" :size="size" :style="inputStyle" />
                 </a-form-model-item>
               </a-col>
@@ -124,7 +109,7 @@
               </a-col>
               <a-col :lg="6"> </a-col>
               <a-col :lg="6">
-                <a-form-model-item label="快递公司">
+                <a-form-model-item label="快递公司" prop="fkexpressid">
                   <a-select :size="size" :style="inputStyle" v-model="model.fkexpressid">
                     <a-select-option v-for="item in selectItems" :value="item.value" :key="item.value">
                       {{ item.name }}
@@ -382,6 +367,33 @@ export default {
       },
       file1: [],
       file2: [],
+      validatorRules:{
+        orderDate: [
+          { required: true, message: '请输入订货日期！' }
+        ],
+        sellDate: [
+          { required: true, message: '请输入要求出货日！' }
+        ],
+        fullAddress: [
+          { required: true, message: '请输入详细地址！' }
+        ],
+        cnee: [
+          { required: true, message: '请输入收货人！' }
+        ],
+        tel: [
+          { required: true, message: '请输入电话！' },
+          // { validator: this.validateMobile }
+        ],
+        region: [
+          { required: true, message: '请选择市！' },
+        ],
+        customerOrderNumber: [
+          { required: true, message: '请输入客户订单号！' }
+        ],
+        fkexpressid: [
+          { required: true, message: '请选择快递公司！' }
+        ]
+      },
     }
   },
   mounted() {
@@ -478,7 +490,6 @@ export default {
         .then(allValues => {
           let formData = this.classifyIntoFormData(allValues)
           // 发起请求
-          console.log(formData);
           return this.requestAddOrEdit(formData)
         })
         .catch(e => {
@@ -525,7 +536,11 @@ export default {
     },
 
     handleSubmit() {
-      this.validateFields()
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.validateFields()
+        }
+      });
     },
     handleCancel() {
       this.close()
@@ -550,13 +565,14 @@ export default {
     },
     // 获取子模块地址，赋值给市、地区、省/市区省
     getAddress(data) {
+      var _this = this;
       const province = data.FProvince ? data.FProvince : ''
       const region = data.FRegion ? data.FRegion : ''
       const city = data.FCity ? data.FCity : ''
-      this.model.province = province
-      this.model.city = city
-      this.model.region = region
-      this.model.address = province + ' ' + region + ' ' + city
+      _this.$set(this.model, 'province', province)
+      _this.$set(this.model, 'city', city)
+      _this.$set(this.model, 'region', region)
+      _this.$set(this.model, 'address', province + ' ' + region + ' ' + city)
     },
     handleValueChange(event) {
       const { type, row, column, value, target } = event
@@ -629,6 +645,13 @@ export default {
           }
         })
       });
+    },
+    validateMobile(rule, value, callback) {
+      if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
+        callback();
+      } else {
+        callback("您的手机号码格式不正确!");
+      }
     }
   }
 }
