@@ -369,29 +369,29 @@ export default {
       file2: [],
       validatorRules:{
         orderDate: [
-          { required: true, message: '请输入订货日期！' }
+          { required: true, message: '请输入订货日期!' }
         ],
         sellDate: [
-          { required: true, message: '请输入要求出货日！' }
+          { required: true, message: '请输入要求出货日!' }
         ],
         fullAddress: [
-          { required: true, message: '请输入详细地址！' }
+          { required: true, message: '请输入详细地址!' }
         ],
         cnee: [
-          { required: true, message: '请输入收货人！' }
+          { required: true, message: '请输入收货人!' }
         ],
         tel: [
-          { required: true, message: '请输入电话！' },
+          { required: true, message: '请输入电话!' },
           // { validator: this.validateMobile }
         ],
         region: [
-          { required: true, message: '请选择市！' },
+          { required: true, message: '请选择市!' },
         ],
         customerOrderNumber: [
-          { required: true, message: '请输入客户订单号！' }
+          { required: true, message: '请输入客户订单号!' }
         ],
         fkexpressid: [
-          { required: true, message: '请选择快递公司！' }
+          { required: true, message: '请选择快递公司!' }
         ]
       },
     }
